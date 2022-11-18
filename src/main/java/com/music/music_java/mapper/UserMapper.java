@@ -21,5 +21,8 @@ public interface UserMapper{
     @Select("select * from user where username = #{username} && password = #{password}")
     User login(UserVo userVo);
 
+    @Insert("insert into user (username,password,accountname,icon,sex,birthday,localtion,introduce) " +
+            "values(#{username},#{password},#{accountname},#{icon},#{sex},#{birthday},#{localtion},#{introduce}) ")
+    void register(User user);
 
 }
