@@ -28,6 +28,11 @@ spring:
         max-idle: 10
         # 连接池中的最小空闲连接
         min-idle: 0
+  servlet:
+    multipart:
+      max-file-size: 1024MB         # 允许上传最大文件大小
+      file-size-threshold: 1MB
+      max-request-size: 1024MB      # 设置最大的请求文件的大小
 
 
 sa-token:

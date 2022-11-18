@@ -28,4 +28,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.login(userVo);
     }
 
+    @Override
+    public boolean register(User user) {
+        if (userMapper.selectExit(user.getUsername()) > 0){
+            return false;
+        }
+        user.setPassword(SaBase64Util.encode(user.getPassword()));
+        userMapper.register(user);
+        return true;
+    }
+
 }

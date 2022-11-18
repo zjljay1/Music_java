@@ -7,13 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 
-/*
-*@author 枫梧
-*@Description token生成
-*@Date 21:07 2022/9/29
-*@Param
-*@Return
-**/
+
 public class JwtUtils {
     /**
      * token的失效时间
