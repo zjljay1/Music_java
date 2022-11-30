@@ -20,17 +20,34 @@ import java.util.List;
  */
 public interface SongsMapper {
 
-    @Insert("")
+    /**
+     * 添加歌曲
+     * @param songs
+     * @return
+     */
+    @Insert("insert into songs (user_id,song,singer_name,singer_id,save_path,file_path) values (#{userId},#{song},#{singerName},#{singerId},#{savePath},#{filePath})")
     int insertSongs(Songs songs);
 
-    @Delete("")
-    int deleteSongs(Songs songs);
+    /**
+     * 删除歌曲
+     * @param id
+     * @param userId
+     * @return
+     */
+    @Delete("delete from songs where id = #{id} && user_id = #{userId}")
+    int deleteSongs(Long id,Long userId);
 
-    @Select("")
-    Songs selectSongs(HashMap<String ,Object> hashMap);
+    /**
+     * 查找所有歌曲
+     * @param id
+     * @return
+     */
+    @Select("select * from songs where id = #{id}")
+    List<Songs> selectAllSongs(Long id);
 
-    @Update("")
+
     int updateSongs(Songs songs);
+
 
     int insertSongsList(List<Songs> songsList);
 
