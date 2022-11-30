@@ -5,8 +5,12 @@ import com.music.music_java.entity.mbg.Songs;
 import com.music.music_java.mapper.SongsMapper;
 import com.music.music_java.service.SongsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -18,16 +22,43 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class SongsServiceImpl  implements SongsService {
 
+    @Autowired
+    private SongsMapper songsMapper;
+
     @Override
-    public boolean addSongs(MultipartFile file) {
+    public boolean addSongs(Long userId,String singerName,MultipartFile file) {
 
         String originalFilename = file.getOriginalFilename();
 
-        String type = originalFilename.substring(originalFilename.indexOf('.'));
-        MusicFileUtil musicFileUtil = new MusicFileUtil(type, file);
+        String type = originalFilename.substring(originalFilename.indexOf('.') + 1);
 
-        String fws = musicFileUtil.uploadFile();
+        HashMap<String,String > hashMap = MusicFileUtil.uploadFile(type, file);
 
-        return true;
+        if (hashMap.get("error") != (null)){
+            return false;
+        }
+
+        Songs songs = new Songs();
+
+        songs.setUserId(userId);
+        songs.setSong(originalFilename);
+        songs.setSingerName(singerName);
+        songs.setSingerId(1L);
+        songs.setFilePath(hashMap.get("filePath"));
+        songs.setSavePath(hashMap.get("savePath"));
+
+        int i = songsMapper.insertSongs(songs);
+        if (i > 0)
+            return true;
+        else
+            return false;
+
+
+    }
+
+    @Override
+    public List<Songs> selectAllSongs(Long id) {
+
+        return songsMapper.selectAllSongs(id);
     }
 }

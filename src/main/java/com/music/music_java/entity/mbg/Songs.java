@@ -2,6 +2,7 @@ package com.music.music_java.entity.mbg;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,85 +15,97 @@ import lombok.EqualsAndHashCode;
  * @since 2022-11-03
  */
 @Data
-  @EqualsAndHashCode(callSuper = false)
-    public class Songs implements Serializable {
+public class Songs implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-      /**
+    /**
      * id
      */
-        private Long id;
+    private Long id;
 
-      /**
+    /**
      * 歌曲名称
      */
-      private String song;
+    private String song;
 
-      /**
+    /**
      * 作曲
      */
-      private String compose;
+    private String compose;
 
-      /**
+    /**
      * 作词
      */
-      private String writeWords;
+    private String writeWords;
 
-      /**
+    /**
      * 编曲
      */
-      private String arrangement;
+    private String arrangement;
 
-      /**
+    /**
      * 制作人
      */
-      private String producer;
+    private String producer;
 
-      /**
+    /**
      * 歌词
      */
-      private String lyric;
+    private String lyric;
 
-      /**
+    /**
      * 喜欢
      */
-      private String like;
+    private String like;
 
-      /**
+    /**
      * 歌单id
      */
-      private Long songListId;
+    private Long songListId;
 
-      /**
+    /**
      * 专辑id
      */
-      private Long albumId;
+    private Long albumId;
 
-      /**
+    /**
      * 专辑名称
      */
-      private String albumName;
+    private String albumName;
 
-      /**
+    /**
      * 歌手id
      */
-      private Long singerId;
+    private Long singerId;
 
-      /**
+    /**
      * 歌手名字
      */
-      private String singerName;
+    private String singerName;
 
-      /**
+    /**
      * 歌曲图片
      */
-      private String songImg;
+    private String songImg;
 
-      /**
+    /**
      * 歌曲时长
      */
-      private LocalDateTime songTime;
+    private LocalDateTime songTime;
 
+    /**
+     * 用户id
+     */
+    private Long userId;
 
+    /**
+     * 用户id
+     */
+    private String savePath;
+
+    /**
+     * 用户id
+     */
+    private String filePath;
 }

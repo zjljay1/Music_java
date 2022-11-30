@@ -3,6 +3,23 @@
 <mapper namespace="com.music.music_java.mapper.SongsMapper">
 
     <insert id="insertSongsList">
-
+        insert into song (user_id,song,singer_name,singer_id,save_path,file_path)
+        values
+        <foreach collection="songsList" item="songs" separator=",">
+            (#{songs.song},#{songs.userId},#{songs.song},#{songs.singerName},#{songs.singerId},#{songs.savePath},#{songs.filePath})
+        </foreach>
     </insert>
+
+    <update id="updateSongs">
+        update songs
+        <set>
+            <if test="song != null and song != ''">
+                song=#{song},
+            </if>
+            <if test="singer_name != null and singer_name != ''">
+                singer_name=#{singerName},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
 </mapper>

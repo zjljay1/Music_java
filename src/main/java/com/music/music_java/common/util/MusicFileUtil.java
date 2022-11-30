@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -18,44 +19,17 @@ import java.util.UUID;
  */
 public class MusicFileUtil {
 
-    Logger logger = LoggerFactory.getLogger(MusicFileUtil.class);
-
-    private String type;
-
-    private MultipartFile file;
-
-    private String savePath;
-
-    /**
-     * 文件访问地址
-     */
-    private String resultPath;
-
-    /**
-     * 根据类型读取配置文件构造器
-     * @param type  properties文件key
-     * @param file  文件
-     */
-    public MusicFileUtil(String type, MultipartFile file){
-        this.file = file;
-        this.type = type;
-    }
-
-    /**
-     * 根据保存路径构造器
-     * @param file   文件
-     * @param savePath  保存路径如： C:\\upload
-     */
-    public MusicFileUtil(MultipartFile file, String savePath){
-        this.file = file;
-        this.savePath = savePath;
-    }
+    static Logger logger = LoggerFactory.getLogger(MusicFileUtil.class);
 
     /**
      * 上传文件方法
      * @return
      */
-    public String uploadFile(){
+    public static HashMap<String,String> uploadFile(String type,MultipartFile file){
+
+        HashMap<String,String> hashMap = new HashMap<>();
+
+        String resultPath;
 
         logger.info("上传文件类型：" + type);
 
@@ -65,7 +39,8 @@ public class MusicFileUtil {
 
         //判断文件不为空
         if (file == null && file.isEmpty()) {
-            return "上传的文件为空";
+            hashMap.put("error","上传的文件为空");
+            return hashMap;
         }
 
         if(type != null && !type.isEmpty()){
@@ -73,9 +48,6 @@ public class MusicFileUtil {
             save_path = "../Music_file/";
         }
 
-        if(save_path == null){
-            save_path = savePath;
-        }
 
         //获取到文件的名字
         String oldFileName = file.getOriginalFilename();
@@ -87,20 +59,28 @@ public class MusicFileUtil {
         logger.info("上传文件新名称：" + newFileName);
 
         //保存后的文件路径
-        String affterPath = save_path + newFileName;
+        String affterPath = save_path + type + "/" + newFileName;
+        hashMap.put("savePath",affterPath);
         logger.info("文件保存位置：" + affterPath);
 
         //创建文件对象
         File dest = new File(affterPath);
-        //文件或目录是否存在
-        if (dest.exists()) {
-            dest.mkdir();
+
+        if (!dest.getParentFile().getParentFile().exists()) {
+            dest.getParentFile().getParentFile().mkdir();
         }
 
         //判断文件父目录是否存在
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdir();
         }
+
+        //文件或目录是否存在
+        if (dest.exists()) {
+            dest.mkdir();
+        }
+
+
         //保存文件
         try {
             //获取输入流
@@ -130,10 +110,12 @@ public class MusicFileUtil {
             //java项目请求路径 如：/image/download/file
             String middle = "Music_file/";
             resultPath = prefix + bendi2 + middle + newFileName;
+            hashMap.put("filePath",resultPath);
             logger.info("文件下载地址：" + resultPath);
         } catch (IOException e) {
             e.printStackTrace();
-            return "服务器异常，请稍后重试";
+            hashMap.put("error","服务器异常，请稍后重试");
+            return hashMap;
         }finally {
             try{
                 if(os != null || os != null){
@@ -143,9 +125,10 @@ public class MusicFileUtil {
                 }
             }catch (IOException e){
                 e.printStackTrace();
-                return "流关闭异常";
+                hashMap.put("error","流关闭异常");
+                return hashMap;
             }
         }
-        return resultPath;
+        return hashMap;
     }
 }
